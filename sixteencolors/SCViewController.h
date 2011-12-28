@@ -10,5 +10,12 @@
 #import "RequestManager.h"
 
 @interface SCViewController : UIViewController
+
 @property (nonatomic, strong) RequestManager *requestManager;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
+
+- (void)showLoadingSpinner;
+- (void)hideLoadingSpinner;
+
 @end
+

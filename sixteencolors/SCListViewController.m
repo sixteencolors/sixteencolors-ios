@@ -23,6 +23,15 @@
 @synthesize year = mYear;
 @synthesize packName = mPackName;
 
+#pragma mark - Private
+
+- (void)ae_loadingFinished
+{
+	[self.tableView reloadData];
+	self.tableView.hidden = NO;
+	[self hideLoadingSpinner];
+}
+
 #pragma mark - View lifecycle etc
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -42,6 +51,7 @@
 	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
+	self.tableView.hidden = YES;
 	[self.view addSubview:self.tableView];
 	
 	__block SCListViewController *bself = self;
@@ -52,7 +62,7 @@
 		
 		[self.requestManager fetchYearList:^(NSArray *yearList) {
 			bself.listContents = yearList;
-			[bself.tableView reloadData];
+			[bself ae_loadingFinished];
 		}];
 	}
 	else if (self.listType == SCListTypePacks)
@@ -61,7 +71,7 @@
 		
 		[self.requestManager fetchPacksForYear:self.year success:^(NSArray *packs) {
 			bself.listContents = packs;
-			[bself.tableView reloadData];
+			[bself ae_loadingFinished];
 		}];
 	}
 	else if (self.listType == SCListTypePack)
@@ -70,11 +80,13 @@
 		
 		[self.requestManager fetchPackWithName:self.packName success:^(NSDictionary *pack) {
 			bself.listContents = [pack objectForKey:@"files"];
-			[bself.tableView reloadData];
+			[bself ae_loadingFinished];
 		}];
 	}
 	else
 		NSLog(@"unknown list type");
+	
+	[self showLoadingSpinner];
 }
 
 - (void)viewDidUnload
