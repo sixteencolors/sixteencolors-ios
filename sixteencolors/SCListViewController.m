@@ -8,6 +8,7 @@
 
 #import "SCListViewController.h"
 #import "NSArray+SCAdditions.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface SCListViewController ()
 @property (nonatomic, strong) UITableView *tableView;
@@ -97,7 +98,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSString *cellIdentifier = @"Cell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	__block UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (!cell)
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 	
@@ -115,6 +116,16 @@
 	else if (self.listType == SCListTypePack)
 	{
 		cell.textLabel.text = [item objectForKey:@"filename"];
+		UIImageView *thumb = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://sixteencolors.net%@", [item objectForKey:@"thumbnail"]]];
+		NSURLRequest *req = [NSURLRequest requestWithURL:url];
+		__block UITableView *tv = tableView;
+		__block NSIndexPath *ip = indexPath;
+		cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+		[thumb setImageWithURLRequest:req placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+				[tv reloadRowsAtIndexPaths:[NSArray arrayWithObject:ip] withRowAnimation:UITableViewRowAnimationNone];
+		} failure:nil];
+		cell.imageView.image = thumb.image;
 	}
 	else
 		NSLog(@"unknown list type");
