@@ -26,7 +26,10 @@
 	RequestManager *requestManager = [[RequestManager alloc] init];
 	SCViewController *rootViewController = nil;
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+	{
 		rootViewController = [[SCListViewController alloc] initWithNibName:nil bundle:nil];
+		((SCListViewController *)rootViewController).listType = SCListTypeYear;
+	}
 	else
 		rootViewController = [[SCiPadViewController alloc] initWithNibName:nil bundle:nil];
 

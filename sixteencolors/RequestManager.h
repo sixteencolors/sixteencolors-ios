@@ -10,9 +10,10 @@
 
 @interface RequestManager : NSObject
 
-// TODO: add failure handling
+// TODO: add failure handling and actual model objects, not just stupid arrays and dictionaries
 
 - (void)fetchYearList:(void (^)(NSArray *yearList))success;
 - (void)fetchPacksForYear:(NSString *)year success:(void (^)(NSArray *packs))success;
+- (void)fetchPackWithName:(NSString *)name success:(void (^)(NSDictionary *pack))success;
 
 @end

@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "SCViewController.h"
 
-@interface SCListViewController : SCViewController <UITableViewDelegate, UITableViewDataSource>
+typedef enum
+{
+	SCListTypeYear = 0,
+	SCListTypePacks, // list of packs
+	SCListTypePack, // pack contents
+} SCListType;
 
+@interface SCListViewController : SCViewController <UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, assign) SCListType listType;
+@property (nonatomic, strong) NSString *year;
+@property (nonatomic, strong) NSString *packName;
 @end

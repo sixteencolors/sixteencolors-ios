@@ -18,14 +18,9 @@
 
 @synthesize tableView = mTableView;
 @synthesize listContents = mListContents;
-
-#pragma mark - Private
-
-- (void)sc_yearListUpdatedWithList:(NSArray *)list
-{
-	self.listContents = list;
-	[self.tableView reloadData];
-}
+@synthesize listType = mListType;
+@synthesize year = mYear;
+@synthesize packName = mPackName;
 
 #pragma mark - View lifecycle etc
 
@@ -49,9 +44,36 @@
 	[self.view addSubview:self.tableView];
 	
 	__block SCListViewController *bself = self;
-	[self.requestManager fetchYearList:^(NSArray *yearList) {
-		[bself sc_yearListUpdatedWithList:yearList];
-	}];
+	
+	if (self.listType == SCListTypeYear)
+	{
+		self.title = NSLocalizedString(@"Years", nil);
+		
+		[self.requestManager fetchYearList:^(NSArray *yearList) {
+			bself.listContents = yearList;
+			[bself.tableView reloadData];
+		}];
+	}
+	else if (self.listType == SCListTypePacks)
+	{
+		self.title = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), self.year];
+		
+		[self.requestManager fetchPacksForYear:self.year success:^(NSArray *packs) {
+			bself.listContents = packs;
+			[bself.tableView reloadData];
+		}];
+	}
+	else if (self.listType == SCListTypePack)
+	{
+		self.title = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), self.packName];
+		
+		[self.requestManager fetchPackWithName:self.packName success:^(NSDictionary *pack) {
+			bself.listContents = [pack objectForKey:@"files"];
+			[bself.tableView reloadData];
+		}];
+	}
+	else
+		NSLog(@"unknown list type");
 }
 
 - (void)viewDidUnload
@@ -79,11 +101,58 @@
 	if (!cell)
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 	
-	NSDictionary *year = [self.listContents objectAtIndexOrNil:indexPath.row];
-	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d", nil), [[year objectForKey:@"year"] integerValue]];
-	cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d packs", nil), [[year objectForKey:@"packs"] integerValue]];
+	NSDictionary *item = [self.listContents objectAtIndexOrNil:indexPath.row];
+
+	if (self.listType == SCListTypeYear)
+	{
+		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d", nil), [[item objectForKey:@"year"] integerValue]];
+		cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d packs", nil), [[item objectForKey:@"packs"] integerValue]];
+	}
+	else if (self.listType == SCListTypePacks)
+	{
+		cell.textLabel.text = [item objectForKey:@"name"];
+	}
+	else if (self.listType == SCListTypePack)
+	{
+		cell.textLabel.text = [item objectForKey:@"filename"];
+	}
+	else
+		NSLog(@"unknown list type");
+
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	// starting to realize that this may not be the best design in existence
+	if (self.listType == SCListTypeYear)
+	{
+		NSString *year = [[[self.listContents objectAtIndexOrNil:indexPath.row] objectForKey:@"year"] stringValue];
+		SCListViewController *lvc = [[SCListViewController alloc] initWithNibName:nil bundle:nil];
+		lvc.listType = SCListTypePacks;
+		lvc.year = year;
+		lvc.requestManager = self.requestManager;
+		[self.navigationController pushViewController:lvc animated:YES];
+	}
+	else if (self.listType == SCListTypePacks)
+	{
+		NSString *pack = [[self.listContents objectAtIndexOrNil:indexPath.row] objectForKey:@"name"];
+		SCListViewController *lvc = [[SCListViewController alloc] initWithNibName:nil bundle:nil];
+		lvc.listType = SCListTypePack;
+		lvc.packName = pack;
+		lvc.requestManager = self.requestManager;
+		[self.navigationController pushViewController:lvc animated:YES];
+	}
+	else if (self.listType == SCListTypePack)
+	{
+		// TODO
+	}	
 }
 
 @end
