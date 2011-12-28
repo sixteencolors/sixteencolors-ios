@@ -129,6 +129,11 @@
 	else if (self.listType == SCListTypePack)
 	{
 		cell.textLabel.text = [item objectForKey:@"filename"];
+
+		/*
+		 * FIXME: this whole thing DOES NOT WORK and WILL crash or look crazy
+		 *
+		 
 		UIImageView *thumb = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
 		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://sixteencolors.net%@", [item objectForKey:@"thumbnail"]]];
 		NSURLRequest *req = [NSURLRequest requestWithURL:url];
@@ -136,9 +141,10 @@
 		__block NSIndexPath *ip = indexPath;
 		cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
 		[thumb setImageWithURLRequest:req placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-				[tv reloadRowsAtIndexPaths:[NSArray arrayWithObject:ip] withRowAnimation:UITableViewRowAnimationNone];
+			[tv reloadRowsAtIndexPaths:[NSArray arrayWithObject:ip] withRowAnimation:UITableViewRowAnimationNone];
 		} failure:nil];
 		cell.imageView.image = thumb.image;
+		 */
 	}
 	else
 		NSLog(@"unknown list type");
