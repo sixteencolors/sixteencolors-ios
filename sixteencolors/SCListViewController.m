@@ -9,6 +9,7 @@
 #import "SCListViewController.h"
 #import "NSArray+SCAdditions.h"
 #import "UIImageView+AFNetworking.h"
+#import "SCFullscreenImageViewController.h"
 
 @interface SCListViewController ()
 @property (nonatomic, strong) UITableView *tableView;
@@ -174,7 +175,13 @@
 	}
 	else if (self.listType == SCListTypePack)
 	{
-		// TODO
+		NSDictionary *item = [self.listContents objectAtIndexOrNil:indexPath.row];
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://sixteencolors.net%@", [item objectForKey:@"fullsize"]]];
+		SCFullscreenImageViewController *fivc = [[SCFullscreenImageViewController alloc] initWithNibName:nil bundle:nil];
+		fivc.url = url;
+		fivc.filename = [item objectForKey:@"filename"];
+		fivc.requestManager = self.requestManager;
+		[self.navigationController pushViewController:fivc animated:YES];
 	}	
 }
 

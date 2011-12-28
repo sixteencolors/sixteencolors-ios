@@ -28,6 +28,7 @@
 		90BEA03A14AB4DB700100394 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEA02F14AB4DB700100394 /* AFXMLRequestOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		90BEA03B14AB4DB700100394 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEA03114AB4DB700100394 /* UIImageView+AFNetworking.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		90C0C25314AB67A500D01F16 /* NSArray+SCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C0C25214AB67A500D01F16 /* NSArray+SCAdditions.m */; };
+		90C0C26814AB87DA00D01F16 /* SCFullscreenImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C0C26714AB87DA00D01F16 /* SCFullscreenImageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,8 @@
 		90BEA03114AB4DB700100394 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		90C0C25114AB67A500D01F16 /* NSArray+SCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SCAdditions.h"; sourceTree = "<group>"; };
 		90C0C25214AB67A500D01F16 /* NSArray+SCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SCAdditions.m"; sourceTree = "<group>"; };
+		90C0C26614AB87DA00D01F16 /* SCFullscreenImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFullscreenImageViewController.h; sourceTree = "<group>"; };
+		90C0C26714AB87DA00D01F16 /* SCFullscreenImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCFullscreenImageViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +110,8 @@
 				904D6E3114AB5FD8006836AF /* SCListViewController.m */,
 				904D6E3314AB6029006836AF /* SCiPadViewController.h */,
 				904D6E3414AB6029006836AF /* SCiPadViewController.m */,
+				90C0C26614AB87DA00D01F16 /* SCFullscreenImageViewController.h */,
+				90C0C26714AB87DA00D01F16 /* SCFullscreenImageViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -290,6 +295,7 @@
 				904D6E3214AB5FD8006836AF /* SCListViewController.m in Sources */,
 				904D6E3514AB6029006836AF /* SCiPadViewController.m in Sources */,
 				90C0C25314AB67A500D01F16 /* NSArray+SCAdditions.m in Sources */,
+				90C0C26814AB87DA00D01F16 /* SCFullscreenImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
